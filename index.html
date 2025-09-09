@@ -30,7 +30,7 @@
       <div class="ball main" id="m6">--</div>
     </div>
     <div class="row">
-      <div class="label">Bonus</div>
+      <div class="label">Bonus給你參考</div>
       <div class="ball bonus" id="bonus">--</div>
     </div>
     <div class="actions">
@@ -53,7 +53,6 @@
     const main = pickUnique(49, 6);       // 六個主號碼（1..46，不重複）
     main.sort((a,b)=>a-b);                // 依習慣排序
     const bonus = pickUnique(49, 1, new Set(main))[0]; // Bonus 不與主號碼重複
-    document.write("給你參考");
 
     for (let i=0;i<6;i++) {
       document.getElementById(`m${i+1}`).textContent = main[i];
