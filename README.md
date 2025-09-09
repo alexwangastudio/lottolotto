@@ -1,2 +1,69 @@
 # lottolotto
-中了要分我
+// 中了要分我
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>簡易隨機號碼產生器</title>
+<style>
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial; display:grid; place-items:center; min-height:100vh; }
+  .box { width:min(720px,92vw); border:1px solid #e5e7eb; border-radius:12px; padding:20px; }
+  .row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+  .label { width:70px; color:#64748b; font-size:14px; }
+  .ball { display:inline-grid; place-items:center; width:48px; height:48px; border-radius:999px; font-weight:700; border:1px solid #e5e7eb; }
+  .main { background:#f1f5f9; color:#0f172a; }
+  .bonus { background:#fb923c; color:#1f2937; border-color:#f59e0b; }
+  .actions { display:grid; place-items:center; margin-top:14px; }
+  button { padding:10px 18px; font-weight:700; border-radius:999px; border:1px solid #0f172a; background:#0f172a; color:#fff; cursor:pointer; }
+  button:active { transform: translateY(1px); }
+</style>
+</head>
+<body>
+  <div class="box">
+    <div class="row">
+      <div class="label">First</div>
+      <div class="ball main" id="m1">--</div>
+      <div class="ball main" id="m2">--</div>
+      <div class="ball main" id="m3">--</div>
+      <div class="ball main" id="m4">--</div>
+      <div class="ball main" id="m5">--</div>
+      <div class="ball main" id="m6">--</div>
+    </div>
+    <div class="row">
+      <div class="label">Bonus</div>
+      <div class="ball bonus" id="bonus">--</div>
+    </div>
+    <div class="actions">
+      <button id="go">GO</button>
+    </div>
+  </div>
+
+<script>
+  // 產生 count 個 [1..rangeMax] 的不重複整數，排除 exclude
+  function pickUnique(rangeMax, count, excludeSet = new Set()) {
+    const s = new Set();
+    while (s.size < count) {
+      const n = Math.floor(Math.random() * rangeMax) + 1; // 1..rangeMax
+      if (!s.has(n) && !excludeSet.has(n)) s.add(n);
+    }
+    return Array.from(s);
+  }
+
+  function draw() {
+    const main = pickUnique(46, 6);       // 六個主號碼（1..46，不重複）
+    main.sort((a,b)=>a-b);                // 依習慣排序
+    const bonus = pickUnique(46, 1, new Set(main))[0]; // Bonus 不與主號碼重複
+
+    for (let i=0;i<6;i++) {
+      document.getElementById(`m${i+1}`).textContent = main[i];
+    }
+    document.getElementById('bonus').textContent = bonus;
+  }
+
+  document.getElementById('go').addEventListener('click', draw);
+  // 進頁就先抽一次
+  draw();
+</script>
+</body>
+</html>
